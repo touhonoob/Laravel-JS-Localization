@@ -26,7 +26,11 @@ class LaravelJsLocalizationServiceProvider extends ServiceProvider
         $this->app['localization.js'] = $this->app->share(function ($app)
         {
             $files = $app['files'];
-            $langs = $app['path.base'].'/resources/lang';
+            if ( starts_with(Application::VERSION, '4') ) {
+                $langs = $app['path.base'].'/app/lang';
+            } else {
+                $langs = $app['path.base'].'/resources/lang';
+            }
             $generator = new Generators\LangJsGenerator($files, $langs);
             return new Commands\LangJsCommand($generator);
         });
